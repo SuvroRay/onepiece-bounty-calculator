@@ -1,0 +1,1187 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Piece Bounty Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 3.5rem;
+            color: #ffd700;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #cccccc;
+            letter-spacing: 1px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Bounty Posters Section */
+        .posters-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .wanted-poster {
+            background: linear-gradient(145deg, #2d2d44 0%, #1f1f30 100%);
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wanted-poster::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #ffd700);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .wanted-poster:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .wanted-poster:hover::before {
+            opacity: 0.3;
+        }
+
+        .wanted-header {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+
+        .character-image {
+            width: 100%;
+            height: 200px;
+            background: #16213e;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #888;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .character-name {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .bounty-amount {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.8rem;
+            color: #ffffff;
+            text-align: center;
+            background: rgba(255, 107, 107, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ff6b6b;
+        }
+
+        /* Calculator Section */
+        .calculator-section {
+            background: linear-gradient(145deg, #2d2d44 0%, #1f1f30 100%);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .calculator-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffd700;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 15px;
+            background: #16213e;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            margin-top: 10px;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+            background: linear-gradient(135deg, #c92a2a 0%, #ff6b6b 100%);
+        }
+
+        .convert-btn:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.4s ease;
+        }
+
+        .result-section.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-text {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .result-amount {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.5rem;
+            color: #ffd700;
+            display: block;
+            margin: 10px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator-section {
+                position: relative;
+                top: 0;
+                order: -1;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .posters-section {
+                grid-template-columns: 1fr;
+            }
+
+            .calculator-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        .berry-symbol {
+            color: #ffd700;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ ONE PIECE BOUNTY CONVERTER ⚡</h1>
+            <p class="subtitle">Convert Pirate Bounties to Real World Currency (1 Berry = 1 Yen)</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Bounty Posters Grid -->
+            <div class="posters-section">
+                <!-- Gol D. Roger -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Roger Image]</div>
+                    <div class="character-name">Gol D. Roger</div>
+                    <div class="bounty-amount">฿5,564,800,000</div>
+                </div>
+
+                <!-- Whitebeard -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Whitebeard Image]</div>
+                    <div class="character-name">Edward Newgate</div>
+                    <div class="bounty-amount">฿5,046,000,000</div>
+                </div>
+
+                <!-- Kaido -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Kaido Image]</div>
+                    <div class="character-name">Kaido</div>
+                    <div class="bounty-amount">฿4,611,100,000</div>
+                </div>
+
+                <!-- Big Mom -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Big Mom Image]</div>
+                    <div class="character-name">Charlotte Linlin</div>
+                    <div class="bounty-amount">฿4,388,000,000</div>
+                </div>
+
+                <!-- Shanks -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Shanks Image]</div>
+                    <div class="character-name">Shanks</div>
+                    <div class="bounty-amount">฿4,048,900,000</div>
+                </div>
+
+                <!-- Blackbeard -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Blackbeard Image]</div>
+                    <div class="character-name">Marshall D. Teach</div>
+                    <div class="bounty-amount">฿3,996,000,000</div>
+                </div>
+
+                <!-- Dracule Mihawk -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Mihawk Image]</div>
+                    <div class="character-name">Dracule Mihawk</div>
+                    <div class="bounty-amount">฿3,590,000,000</div>
+                </div>
+
+                <!-- Buggy -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Buggy Image]</div>
+                    <div class="character-name">Buggy the Clown</div>
+                    <div class="bounty-amount">฿3,189,000,000</div>
+                </div>
+
+                <!-- Monkey D. Luffy -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Luffy Image]</div>
+                    <div class="character-name">Monkey D. Luffy</div>
+                    <div class="bounty-amount">฿3,000,000,000</div>
+                </div>
+
+                <!-- Trafalgar Law -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Law Image]</div>
+                    <div class="character-name">Trafalgar D. Water Law</div>
+                    <div class="bounty-amount">฿3,000,000,000</div>
+                </div>
+
+                <!-- Eustass Kid -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Kid Image]</div>
+                    <div class="character-name">Eustass Kid</div>
+                    <div class="bounty-amount">฿3,000,000,000</div>
+                </div>
+
+                <!-- Crocodile -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Crocodile Image]</div>
+                    <div class="character-name">Sir Crocodile</div>
+                    <div class="bounty-amount">฿1,965,000,000</div>
+                </div>
+
+                <!-- Boa Hancock -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Hancock Image]</div>
+                    <div class="character-name">Boa Hancock</div>
+                    <div class="bounty-amount">฿1,659,000,000</div>
+                </div>
+
+                <!-- King -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[King Image]</div>
+                    <div class="character-name">King the Wildfire</div>
+                    <div class="bounty-amount">฿1,390,000,000</div>
+                </div>
+
+                <!-- Marco -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Marco Image]</div>
+                    <div class="character-name">Marco the Phoenix</div>
+                    <div class="bounty-amount">฿1,374,000,000</div>
+                </div>
+
+                <!-- Queen -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Queen Image]</div>
+                    <div class="character-name">Queen the Plague</div>
+                    <div class="bounty-amount">฿1,320,000,000</div>
+                </div>
+
+                <!-- Roronoa Zoro -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Zoro Image]</div>
+                    <div class="character-name">Roronoa Zoro</div>
+                    <div class="bounty-amount">฿1,111,000,000</div>
+                </div>
+
+                <!-- Jinbe -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Jinbe Image]</div>
+                    <div class="character-name">Jinbe</div>
+                    <div class="bounty-amount">฿1,100,000,000</div>
+                </div>
+
+                <!-- Katakuri -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Katakuri Image]</div>
+                    <div class="character-name">Charlotte Katakuri</div>
+                    <div class="bounty-amount">฿1,057,000,000</div>
+                </div>
+
+                <!-- Vinsmoke Sanji -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Sanji Image]</div>
+                    <div class="character-name">Vinsmoke Sanji</div>
+                    <div class="bounty-amount">฿1,032,000,000</div>
+                </div>
+
+                <!-- Jack -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Jack Image]</div>
+                    <div class="character-name">Jack the Drought</div>
+                    <div class="bounty-amount">฿1,000,000,000</div>
+                </div>
+
+                <!-- Smoothie -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Smoothie Image]</div>
+                    <div class="character-name">Charlotte Smoothie</div>
+                    <div class="bounty-amount">฿932,000,000</div>
+                </div>
+
+                <!-- Nico Robin -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Robin Image]</div>
+                    <div class="character-name">Nico Robin</div>
+                    <div class="bounty-amount">฿930,000,000</div>
+                </div>
+
+                <!-- Cracker -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Cracker Image]</div>
+                    <div class="character-name">Charlotte Cracker</div>
+                    <div class="bounty-amount">฿860,000,000</div>
+                </div>
+
+                <!-- Perospero -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Perospero Image]</div>
+                    <div class="character-name">Charlotte Perospero</div>
+                    <div class="bounty-amount">฿700,000,000</div>
+                </div>
+
+                <!-- Sabo -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Sabo Image]</div>
+                    <div class="character-name">Sabo</div>
+                    <div class="bounty-amount">฿602,000,000</div>
+                </div>
+
+                <!-- Snack -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Snack Image]</div>
+                    <div class="character-name">Charlotte Snack</div>
+                    <div class="bounty-amount">฿600,000,000</div>
+                </div>
+
+                <!-- Portgas D. Ace -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Ace Image]</div>
+                    <div class="character-name">Portgas D. Ace</div>
+                    <div class="bounty-amount">฿550,000,000</div>
+                </div>
+
+                <!-- Who's Who -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Who's Who Image]</div>
+                    <div class="character-name">Who's Who</div>
+                    <div class="bounty-amount">฿546,000,000</div>
+                </div>
+
+                <!-- Usopp -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Usopp Image]</div>
+                    <div class="character-name">God Usopp</div>
+                    <div class="bounty-amount">฿500,000,000</div>
+                </div>
+
+                <!-- Edward Weevil -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Weevil Image]</div>
+                    <div class="character-name">Edward Weevil</div>
+                    <div class="bounty-amount">฿480,000,000</div>
+                </div>
+
+                <!-- Black Maria -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Black Maria Image]</div>
+                    <div class="character-name">Black Maria</div>
+                    <div class="bounty-amount">฿480,000,000</div>
+                </div>
+
+                <!-- Sasaki -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Sasaki Image]</div>
+                    <div class="character-name">Sasaki</div>
+                    <div class="bounty-amount">฿472,000,000</div>
+                </div>
+
+                <!-- Belo Betty -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Belo Betty Image]</div>
+                    <div class="character-name">Belo Betty</div>
+                    <div class="bounty-amount">฿457,000,000</div>
+                </div>
+
+                <!-- Ulti -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Ulti Image]</div>
+                    <div class="character-name">Ulti</div>
+                    <div class="bounty-amount">฿400,000,000</div>
+                </div>
+
+                <!-- Karasu -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Karasu Image]</div>
+                    <div class="character-name">Karasu</div>
+                    <div class="bounty-amount">฿400,000,000</div>
+                </div>
+
+                <!-- Franky -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Franky Image]</div>
+                    <div class="character-name">Franky</div>
+                    <div class="bounty-amount">฿394,000,000</div>
+                </div>
+
+                <!-- Brook -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Brook Image]</div>
+                    <div class="character-name">Brook</div>
+                    <div class="bounty-amount">฿383,000,000</div>
+                </div>
+
+                <!-- Nami -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Nami Image]</div>
+                    <div class="character-name">Nami</div>
+                    <div class="bounty-amount">฿366,000,000</div>
+                </div>
+
+                <!-- Capone Bege -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Bege Image]</div>
+                    <div class="character-name">Capone Bege</div>
+                    <div class="bounty-amount">฿350,000,000</div>
+                </div>
+
+                <!-- Scratchmen Apoo -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Apoo Image]</div>
+                    <div class="character-name">Scratchmen Apoo</div>
+                    <div class="bounty-amount">฿350,000,000</div>
+                </div>
+
+                <!-- Donquixote Doflamingo -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Doflamingo Image]</div>
+                    <div class="character-name">Donquixote Doflamingo</div>
+                    <div class="bounty-amount">฿340,000,000</div>
+                </div>
+
+                <!-- Cavendish -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Cavendish Image]</div>
+                    <div class="character-name">Cavendish</div>
+                    <div class="bounty-amount">฿330,000,000</div>
+                </div>
+
+                <!-- Jewelry Bonney -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Bonney Image]</div>
+                    <div class="character-name">Jewelry Bonney</div>
+                    <div class="bounty-amount">฿320,000,000</div>
+                </div>
+
+                <!-- Basil Hawkins -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Hawkins Image]</div>
+                    <div class="character-name">Basil Hawkins</div>
+                    <div class="bounty-amount">฿320,000,000</div>
+                </div>
+
+                <!-- Gecko Moria -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Moria Image]</div>
+                    <div class="character-name">Gecko Moria</div>
+                    <div class="bounty-amount">฿320,000,000</div>
+                </div>
+
+                <!-- Lindbergh -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Lindbergh Image]</div>
+                    <div class="character-name">Lindbergh</div>
+                    <div class="bounty-amount">฿316,000,000</div>
+                </div>
+
+                <!-- Oven -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Oven Image]</div>
+                    <div class="character-name">Charlotte Oven</div>
+                    <div class="bounty-amount">฿300,000,000</div>
+                </div>
+
+                <!-- Daifuku -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Daifuku Image]</div>
+                    <div class="character-name">Charlotte Daifuku</div>
+                    <div class="bounty-amount">฿300,000,000</div>
+                </div>
+
+                <!-- Caesar Clown -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Caesar Image]</div>
+                    <div class="character-name">Caesar Clown</div>
+                    <div class="bounty-amount">฿300,000,000</div>
+                </div>
+
+                <!-- Bartholomew Kuma -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Kuma Image]</div>
+                    <div class="character-name">Bartholomew Kuma</div>
+                    <div class="bounty-amount">฿296,000,000</div>
+                </div>
+
+                <!-- Morley -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Morley Image]</div>
+                    <div class="character-name">Morley</div>
+                    <div class="bounty-amount">฿293,000,000</div>
+                </div>
+
+                <!-- Page One -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Page One Image]</div>
+                    <div class="character-name">Page One</div>
+                    <div class="bounty-amount">฿290,000,000</div>
+                </div>
+
+                <!-- Fisher Tiger -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Fisher Tiger Image]</div>
+                    <div class="character-name">Fisher Tiger</div>
+                    <div class="bounty-amount">฿230,000,000</div>
+                </div>
+
+                <!-- X Drake -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Drake Image]</div>
+                    <div class="character-name">X Drake</div>
+                    <div class="bounty-amount">฿222,000,000</div>
+                </div>
+
+                <!-- Sai -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Sai Image]</div>
+                    <div class="character-name">Sai</div>
+                    <div class="bounty-amount">฿210,000,000</div>
+                </div>
+
+                <!-- Killer -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Killer Image]</div>
+                    <div class="character-name">Killer</div>
+                    <div class="bounty-amount">฿200,000,000</div>
+                </div>
+
+                <!-- Bartolomeo -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Bartolomeo Image]</div>
+                    <div class="character-name">Bartolomeo</div>
+                    <div class="bounty-amount">฿200,000,000</div>
+                </div>
+
+                <!-- Bellamy -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Bellamy Image]</div>
+                    <div class="character-name">Bellamy</div>
+                    <div class="bounty-amount">฿195,000,000</div>
+                </div>
+
+                <!-- Orlumbus -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Orlumbus Image]</div>
+                    <div class="character-name">Orlumbus</div>
+                    <div class="bounty-amount">฿148,000,000</div>
+                </div>
+
+                <!-- Urouge -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Urouge Image]</div>
+                    <div class="character-name">Urouge</div>
+                    <div class="bounty-amount">฿108,000,000</div>
+                </div>
+
+                <!-- Diamante -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Diamante Image]</div>
+                    <div class="character-name">Diamante</div>
+                    <div class="bounty-amount">฿99,000,000</div>
+                </div>
+
+                <!-- Pica -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Pica Image]</div>
+                    <div class="character-name">Pica</div>
+                    <div class="bounty-amount">฿99,000,000</div>
+                </div>
+
+                <!-- Trebol -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Trebol Image]</div>
+                    <div class="character-name">Trebol</div>
+                    <div class="bounty-amount">฿99,000,000</div>
+                </div>
+
+                <!-- Daz Bonez -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Mr. 1 Image]</div>
+                    <div class="character-name">Daz Bonez (Mr. 1)</div>
+                    <div class="bounty-amount">฿75,000,000</div>
+                </div>
+
+                <!-- Lao G -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Lao G Image]</div>
+                    <div class="character-name">Lao G</div>
+                    <div class="bounty-amount">฿61,000,000</div>
+                </div>
+
+                <!-- Senor Pink -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Senor Pink Image]</div>
+                    <div class="character-name">Senor Pink</div>
+                    <div class="bounty-amount">฿58,000,000</div>
+                </div>
+
+                <!-- Miss Doublefinger -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Miss Doublefinger Image]</div>
+                    <div class="character-name">Miss Doublefinger</div>
+                    <div class="bounty-amount">฿35,000,000</div>
+                </div>
+
+                <!-- Bentham (Mr. 2) -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Mr. 2 Image]</div>
+                    <div class="character-name">Bentham (Mr. 2)</div>
+                    <div class="bounty-amount">฿32,000,000</div>
+                </div>
+
+                <!-- Gladius -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Gladius Image]</div>
+                    <div class="character-name">Gladius</div>
+                    <div class="bounty-amount">฿31,000,000</div>
+                </div>
+
+                <!-- Miss Goldenweek -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Miss Goldenweek Image]</div>
+                    <div class="character-name">Miss Goldenweek</div>
+                    <div class="bounty-amount">฿29,000,000</div>
+                </div>
+
+                <!-- Galdino (Mr. 3) -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Mr. 3 Image]</div>
+                    <div class="character-name">Galdino (Mr. 3)</div>
+                    <div class="bounty-amount">฿24,000,000</div>
+                </div>
+
+                <!-- Foxy -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Foxy Image]</div>
+                    <div class="character-name">Foxy</div>
+                    <div class="bounty-amount">฿24,000,000</div>
+                </div>
+
+                <!-- Arlong -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Arlong Image]</div>
+                    <div class="character-name">Arlong</div>
+                    <div class="bounty-amount">฿20,000,000</div>
+                </div>
+
+                <!-- Don Krieg -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Krieg Image]</div>
+                    <div class="character-name">Don Krieg</div>
+                    <div class="bounty-amount">฿17,000,000</div>
+                </div>
+
+                <!-- Kuro -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Kuro Image]</div>
+                    <div class="character-name">Kuro</div>
+                    <div class="bounty-amount">฿16,000,000</div>
+                </div>
+
+                <!-- Miss Merry Christmas -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Miss Merry Christmas Image]</div>
+                    <div class="character-name">Miss Merry Christmas</div>
+                    <div class="bounty-amount">฿14,000,000</div>
+                </div>
+
+                <!-- Gin -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Gin Image]</div>
+                    <div class="character-name">Gin</div>
+                    <div class="bounty-amount">฿12,000,000</div>
+                </div>
+
+                <!-- Machvise -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Machvise Image]</div>
+                    <div class="character-name">Machvise</div>
+                    <div class="bounty-amount">฿11,000,000</div>
+                </div>
+
+                <!-- Mr. 5 -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Mr. 5 Image]</div>
+                    <div class="character-name">Mr. 5</div>
+                    <div class="bounty-amount">฿10,000,000</div>
+                </div>
+
+                <!-- Kuroobi -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Kuroobi Image]</div>
+                    <div class="character-name">Kuroobi</div>
+                    <div class="bounty-amount">฿9,000,000</div>
+                </div>
+
+                <!-- Jango -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Jango Image]</div>
+                    <div class="character-name">Jango</div>
+                    <div class="bounty-amount">฿9,000,000</div>
+                </div>
+
+                <!-- Higuma -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Higuma Image]</div>
+                    <div class="character-name">Higuma</div>
+                    <div class="bounty-amount">฿8,000,000</div>
+                </div>
+
+                <!-- Hatchan -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Hatchan Image]</div>
+                    <div class="character-name">Hatchan</div>
+                    <div class="bounty-amount">฿8,000,000</div>
+                </div>
+
+                <!-- Miss Valentine -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Miss Valentine Image]</div>
+                    <div class="character-name">Miss Valentine</div>
+                    <div class="bounty-amount">฿7,500,000</div>
+                </div>
+
+                <!-- Sham -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Sham Image]</div>
+                    <div class="character-name">Sham</div>
+                    <div class="bounty-amount">฿7,000,000</div>
+                </div>
+
+                <!-- Buchi -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Buchi Image]</div>
+                    <div class="character-name">Buchi</div>
+                    <div class="bounty-amount">฿7,000,000</div>
+                </div>
+
+                <!-- Chew -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Chew Image]</div>
+                    <div class="character-name">Chew</div>
+                    <div class="bounty-amount">฿5,500,000</div>
+                </div>
+
+                <!-- Alvida -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Alvida Image]</div>
+                    <div class="character-name">Alvida</div>
+                    <div class="bounty-amount">฿5,000,000</div>
+                </div>
+
+                <!-- Mr. 4 -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Mr. 4 Image]</div>
+                    <div class="character-name">Mr. 4</div>
+                    <div class="bounty-amount">฿3,200,000</div>
+                </div>
+
+                <!-- Tony Tony Chopper -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Chopper Image]</div>
+                    <div class="character-name">Tony Tony Chopper</div>
+                    <div class="bounty-amount">฿1,000</div>
+                </div>
+
+                <!-- Bepo -->
+                <div class="wanted-poster">
+                    <div class="wanted-header">WANTED</div>
+                    <div class="character-image">[Bepo Image]</div>
+                    <div class="character-name">Bepo</div>
+                    <div class="bounty-amount">฿500</div>
+                </div>
+            </div>
+
+            <!-- Calculator -->
+            <div class="calculator-section">
+                <h2 class="calculator-title">Bounty Calculator</h2>
+                
+                <div class="input-group">
+                    <label for="bountyInput">Enter Bounty Amount (Berries <span class="berry-symbol">฿</span>)</label>
+                    <input type="number" id="bountyInput" placeholder="e.g., 3000000000" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="currencySelect">Select Currency</label>
+                    <select id="currencySelect">
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="INR">INR - Indian Rupee</option>
+                        <option value="BDT">BDT - Bangladeshi Taka</option>
+                        <option value="CNY">CNY - Chinese Yuan</option>
+                        <option value="KRW">KRW - South Korean Won</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                    </select>
+                </div>
+
+                <button class="convert-btn" onclick="convertBounty()">⚔️ Convert Bounty ⚔️</button>
+
+                <div class="result-section" id="resultSection">
+                    <div class="result-text" id="resultText">
+                        Enter a bounty amount and click convert!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Conversion rates: 1 Berry = 1 Japanese Yen
+        // Using real-world exchange rates (as of typical rates)
+        const conversionRates = {
+            USD: 0.0067,      // 1 JPY ≈ $0.0067 USD
+            EUR: 0.0062,      // 1 JPY ≈ €0.0062 EUR
+            GBP: 0.0053,      // 1 JPY ≈ £0.0053 GBP
+            JPY: 1.0,         // 1 JPY = 1 JPY (base)
+            INR: 0.56,        // 1 JPY ≈ ₹0.56 INR
+            BDT: 0.74,        // 1 JPY ≈ ৳0.74 BDT
+            CNY: 0.048,       // 1 JPY ≈ ¥0.048 CNY
+            KRW: 8.9,         // 1 JPY ≈ ₩8.9 KRW
+            AUD: 0.010,       // 1 JPY ≈ A$0.010 AUD
+            CAD: 0.0093       // 1 JPY ≈ C$0.0093 CAD
+        };
+
+        // Currency symbols
+        const currencySymbols = {
+            USD: '$',
+            EUR: '€',
+            GBP: '£',
+            JPY: '¥',
+            INR: '₹',
+            BDT: '৳',
+            CNY: '¥',
+            KRW: '₩',
+            AUD: 'A$',
+            CAD: 'C$'
+        };
+
+        // Famous character names for result display
+        const characters = [
+            "Luffy's",
+            "Zoro's",
+            "Roger's",
+            "Kaido's",
+            "Shanks's",
+            "Whitebeard's",
+            "Big Mom's",
+            "Blackbeard's",
+            "Law's",
+            "Kid's",
+            "Marco's",
+            "King's",
+            "Katakuri's",
+            "Mihawk's",
+            "Hancock's",
+            "Crocodile's",
+            "Ace's",
+            "Sabo's"
+        ];
+
+        function convertBounty() {
+            const bountyInput = document.getElementById('bountyInput');
+            const currencySelect = document.getElementById('currencySelect');
+            const resultSection = document.getElementById('resultSection');
+            const resultText = document.getElementById('resultText');
+
+            const bountyAmount = parseFloat(bountyInput.value);
+            const selectedCurrency = currencySelect.value;
+
+            // Validation
+            if (!bountyAmount || bountyAmount <= 0) {
+                resultText.innerHTML = '⚠️ Please enter a valid bounty amount!';
+                resultSection.classList.remove('show');
+                setTimeout(() => resultSection.classList.add('show'), 100);
+                return;
+            }
+
+            // Calculate conversion (1 Berry = 1 JPY)
+            const rate = conversionRates[selectedCurrency];
+            const convertedAmount = bountyAmount * rate;
+            const symbol = currencySymbols[selectedCurrency];
+
+            // Random character selection
+            const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
+
+            // Format the result
+            const formattedAmount = convertedAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            // Display result with animation
+            resultSection.classList.remove('show');
+            
+            setTimeout(() => {
+                resultText.innerHTML = `
+                    <div>
+                        ${randomCharacter} bounty equals
+                        <span class="result-amount">${symbol}${formattedAmount} ${selectedCurrency}</span>
+                        in the real world!
+                    </div>
+                `;
+                resultSection.classList.add('show');
+            }, 100);
+        }
+
+        // Allow Enter key to trigger conversion
+        document.getElementById('bountyInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                convertBounty();
+            }
+        });
+    </script>
+</body>
+</html>
+```
